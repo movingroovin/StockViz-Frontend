@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from "axios";
+import { BarChart, Bar, XAxis, YAxis, ReferenceLine } from 'recharts';
 
 class Stocks extends Component {
   state = {
@@ -25,6 +26,7 @@ class Stocks extends Component {
           maxIntradayProfit.name = stock.name
           maxIntradayProfit.profit = intradayProfit
         };
+        let vizData = stock.records.map(record => { return { 'price': record.價格, 'diff': record.買進股數 - record.賣出股數} })
         return (
           <div className="collection-item col s12 m6 l3" key={ index }>
             <div><strong>券商: </strong>{ stock.name }</div>
@@ -45,6 +47,12 @@ class Stocks extends Component {
                   )
                 })
               }
+            <BarChart width={400} height={400} data={vizData}>
+              <Bar dataKey="diff" fill="#8884d8" />\
+              <XAxis dataKey="price" />
+              <YAxis />
+              <ReferenceLine y={0} stroke="#666" />
+            </BarChart>
             <hr/>
           </div>
         )
